@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout2"
+    android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".CapturePhotoFragment">
 
-    <ImageView
-        android:id="@+id/imgViewCamera"
-        android:layout_width="match_parent"
-        android:layout_height="394dp"
-        android:src="@android:drawable/ic_menu_camera" />
-
-    <Button
-        android:id="@+id/btnCapturePhoto"
+    <TextView
+        android:id="@+id/text_view_class"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:textAlignment="center" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <ImageView
+        android:id="@+id/img_view_camera"
+        android:layout_width="match_parent"
+        android:layout_height="450dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <Button
+        android:id="@+id/btn_capture_photo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="Take Photo"
+        android:visibility="invisible" />
+
 </LinearLayout>

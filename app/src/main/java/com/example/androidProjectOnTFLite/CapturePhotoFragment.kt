@@ -11,24 +11,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_capture_photo.*
 import java.io.ByteArrayOutputStream
 
 
 class CapturePhotoFragment : Fragment() {
-    lateinit var Camera: ImageView
-    lateinit var Button: Button
-    lateinit var intent:Intent
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private lateinit var camera: ImageView
+    private lateinit var btnCapturePhoto: Button
+    private lateinit var intent:Intent
+    private lateinit var textClass:TextView
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(
             intent,
             CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_capture_photo, container, false)
     }
@@ -36,10 +41,10 @@ class CapturePhotoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 
-        Button = btnCapturePhoto
-        Camera = imgViewCamera
-
-        Button.setOnClickListener {
+        btnCapturePhoto = btn_capture_photo
+        camera = img_view_camera
+        textClass = text_view_class
+        btnCapturePhoto.setOnClickListener {
                 startActivityForResult(
                     intent,
                     CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
@@ -63,7 +68,11 @@ class CapturePhotoFragment : Fragment() {
                     byteArray, 0,
                     byteArray.size
                 )
-                Camera.setImageBitmap(bitmap)
+                camera.setImageBitmap(bitmap)
+                textClass.text = "Loading..."
+                // do classification
+                textClass.text = "Class"
+                btnCapturePhoto.visibility=View.VISIBLE
             }
         }
     }

@@ -22,8 +22,10 @@ class CapturePhotoFragment : Fragment() {
     private lateinit var btnCapturePhoto: Button
     private lateinit var intent:Intent
     private lateinit var textClass:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(
             intent,
@@ -71,7 +73,7 @@ class CapturePhotoFragment : Fragment() {
                 camera.setImageBitmap(bitmap)
                 textClass.text = "Loading..."
                 // do classification
-                textClass.text = "Class"
+                textClass.text = ImageClassification(bitmap, context!!).objectDetection()
                 btnCapturePhoto.visibility=View.VISIBLE
             }
         }

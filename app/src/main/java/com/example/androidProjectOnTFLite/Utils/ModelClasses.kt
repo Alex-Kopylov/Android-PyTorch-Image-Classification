@@ -1,4 +1,4 @@
-package com.example.androidProjectOnTFLite
+package com.example.androidProjectOnTFLite.Utils
 
 object ModelClasses {
     val names = arrayOf(

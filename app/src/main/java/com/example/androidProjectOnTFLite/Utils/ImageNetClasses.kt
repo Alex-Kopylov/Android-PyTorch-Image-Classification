@@ -1,4 +1,4 @@
-package com.example.androidProjectOnTFLite
+package com.example.androidProjectOnTFLite.Utils
 
 object ImageNetClasses {
     var IMAGENET_CLASSES = arrayOf(

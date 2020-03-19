@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.androidProjectOnTFLite.RoomDB.Picture
+import com.example.androidProjectOnTFLite.Utils.Utils
 import kotlinx.android.synthetic.main.fragment_capture_photo.*
 import java.io.ByteArrayOutputStream
 
@@ -72,9 +75,22 @@ class CapturePhotoFragment : Fragment() {
                 )
                 camera.setImageBitmap(bitmap)
                 textClass.text = "Loading..."
-                // do classification
-                textClass.text = ImageClassification(bitmap, context!!).objectDetection()
+                val imageNetClasses = ImageClassification(bitmap, context!!).objectDetection()
+                textClass.text = imageNetClasses
                 btnCapturePhoto.visibility=View.VISIBLE
+
+                Thread {
+                    val imgPath =
+                        Utils.getImagePathFromBitmap(context!!, bitmap, title = imageNetClasses)
+                    PictureDao?.insertPicture(Picture(imageNetClasses, imgPath))
+
+                    //textClass.text = PictureDao!!.getPictures().toString()
+                    db?.pictureDao()?.getPictures()?.forEach() {
+                        Log.i("Fetch Records", "Id:  : ${it.id}")
+                        Log.i("Fetch Records", "Classes:  : ${it.imageNetClasses}")
+                        Log.i("Fetch Records", "Path:  : ${it.imgPath}")
+                    }
+                }.start()
             }
         }
     }

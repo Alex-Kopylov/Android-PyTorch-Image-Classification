@@ -3,7 +3,8 @@ package com.example.androidProjectOnTFLite
 
 import android.content.Context
 import android.graphics.Bitmap
-import com.example.androidProjectOnTFLite.Utils.AssetFilePath
+import com.example.androidProjectOnTFLite.Utils.Utils
+import com.example.androidProjectOnTFLite.Utils.ImageNetClasses
 import org.pytorch.IValue
 import org.pytorch.Module
 import org.pytorch.torchvision.TensorImageUtils
@@ -25,6 +26,6 @@ class ImageClassification(bitmap: Bitmap, context: Context) {
         return classNames
     }
 
-    private fun loadModule(context: Context) = Module.load(AssetFilePath.getPath(context, "resnet18.pt"));
+    private fun loadModule(context: Context) = Module.load(Utils.assetGetAbsolutePathByName(context, "resnet18.pt"));
 
 }

@@ -19,12 +19,11 @@ class ImageClassification(bitmap: Bitmap, context: Context) {
     )
 
     public fun objectDetection(): String {
-        val outputTensor = module.forward(IValue.from(inputTensor)).toTensor()
-        val scores = outputTensor.dataAsFloatArray
-        val maxScoreIdx = scores.indices.maxBy { scores[it] } ?: -1
-        val classNames = ImageNetClasses.IMAGENET_CLASSES[maxScoreIdx]
-        return classNames
-    }
+            val outputTensor = module.forward(IValue.from(inputTensor)).toTensor()
+            val scores = outputTensor.dataAsFloatArray
+            val maxScoreIdx = scores.indices.maxBy { scores[it] } ?: -1
+        return ImageNetClasses.IMAGENET_CLASSES[maxScoreIdx]
+        }
 
     private fun loadModule(context: Context) = Module.load(Utils.assetGetAbsolutePathByName(context, "resnet18.pt"));
 

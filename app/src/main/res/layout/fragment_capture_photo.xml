@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".CapturePhotoFragment">
 
     <TextView
         android:id="@+id/text_view_class"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center" />
+        android:layout_marginTop="5dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-
-    <ImageView
+    <TextView
         android:id="@+id/img_view_camera"
         android:layout_width="match_parent"
-        android:layout_height="450dp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="450dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:text="Loading\n..."
+        android:textSize="60sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_capture_photo"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_class"
+        tools:layout_editor_absoluteX="-16dp" />
 
     <Button
         android:id="@+id/btn_capture_photo"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:text="Take Photo"
-        android:visibility="invisible" />
+        android:text="Take a photo"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

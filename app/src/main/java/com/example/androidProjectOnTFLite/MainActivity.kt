@@ -16,10 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        //db = AppDatabase.getDatabaseInstance(this)
-        db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "pics-database")
+        db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "pics-database").allowMainThreadQueries()
             .build()
-        //  val host = NavHostFragment.create(R.navigation.nav_graph)
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -21,38 +22,28 @@ import java.io.ByteArrayOutputStream
 
 
 class CapturePhotoFragment : Fragment() {
-    private lateinit var camera: ImageView
+    private lateinit var camera: TextView
     private lateinit var btnCapturePhoto: Button
-    private lateinit var intent:Intent
+    private val intent= Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     private lateinit var textClass:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(
-            intent,
-            CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
+        startCamera()
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_capture_photo, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
         btnCapturePhoto = btn_capture_photo
         camera = img_view_camera
         textClass = text_view_class
         btnCapturePhoto.setOnClickListener {
-                startActivityForResult(
-                    intent,
-                    CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
+            startCamera()
         }
 
     }
@@ -68,33 +59,33 @@ class CapturePhotoFragment : Fragment() {
                 val stream = ByteArrayOutputStream()
                 bmp!!.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 val byteArray: ByteArray = stream.toByteArray()
-                // convert byte array to Bitmap
                 val bitmap = BitmapFactory.decodeByteArray(
                     byteArray, 0,
                     byteArray.size
                 )
-                camera.setImageBitmap(bitmap)
-                textClass.text = "Loading..."
+                camera.text=""
+                camera.setBackgroundDrawable((BitmapDrawable(resources, bitmap)))
+                textClass.text = "Classifying..."
+
                 val imageNetClasses = ImageClassification(bitmap, context!!).objectDetection()
                 textClass.text = imageNetClasses
                 btnCapturePhoto.visibility=View.VISIBLE
 
-                Thread {
-                    val imgPath =
-                        Utils.getImagePathFromBitmap(context!!, bitmap, title = imageNetClasses)
-                    PictureDao?.insertPicture(Picture(imageNetClasses, imgPath))
-
-                    //textClass.text = PictureDao!!.getPictures().toString()
-                    db?.pictureDao()?.getPictures()?.forEach() {
-                        Log.i("Fetch Records", "Id:  : ${it.id}")
-                        Log.i("Fetch Records", "Classes:  : ${it.imageNetClasses}")
-                        Log.i("Fetch Records", "Path:  : ${it.imgPath}")
-                    }
-                }.start()
+                val imgPath = Utils.getImagePathFromBitmap(context!!, bitmap, title = imageNetClasses)
+                db?.pictureDao()?.insertPicture(Picture(imageNetClasses, imgPath))
+            }
+            else {
+                camera.text = ""
+                camera.background = resources.getDrawable(R.drawable.pytorch_logo)
+                btnCapturePhoto.visibility = View.VISIBLE
             }
         }
     }
-
+    private fun startCamera(){
+        startActivityForResult(
+            intent,
+            CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
+    }
     companion object {
         private const val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888
     }
